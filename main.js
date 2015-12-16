@@ -15,15 +15,14 @@ export default class App extends React.Component {
 
   render () {
     return (
-      <div className='appWrapper'>
-        <h1>Droids You Are Looking For</h1>
-        <SearchBox whenUserTypes={::this.whenUserTypes} />
-        {this.getSearchDOM()}
-        <ProductResult productResult={this.state.searchResult} />
+      <div className='app-wrapper'>
+        <h1>Redmart You Are Looking For</h1>
+        <SearchBox whenUserTypes={ ::this.whenUserTypes } />
+        { this.getSearchDOM() }
+        <ProductResult displayResults={ this.state.searchResult } />
       </div>
     )
   }
-
 
   getSearchDOM () {
     const { searchQuery } = this.state
@@ -36,9 +35,7 @@ export default class App extends React.Component {
   whenUserTypes (e) {
     const query = e.target.value
     const that = this
-
     this.setState({ searchQuery: query })
-
     fetch('https://api.redmart.com/v1.5.6/catalog/search?q=' + query + '&pageSize=18&sort=1')
       .then((res) => res.json())
       .then((data) => that.setState({
@@ -47,7 +44,6 @@ export default class App extends React.Component {
       }))
 
   }
-
 }
 
 // Mounting App

@@ -64,6 +64,10 @@
 
 	var _SearchBox2 = _interopRequireDefault(_SearchBox);
 
+	var _ProductResult = __webpack_require__(160);
+
+	var _ProductResult2 = _interopRequireDefault(_ProductResult);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71,8 +75,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import ProductResult from './components/ProductResult'
 
 	var App = (function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -82,7 +84,10 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
 
-	    _this.state = { searchQuery: '' };
+	    _this.state = {
+	      searchQuery: '',
+	      searchResult: []
+	    };
 	    return _this;
 	  }
 
@@ -91,24 +96,23 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'appWrapper' },
+	        { className: 'app-wrapper' },
 	        _react2.default.createElement(
 	          'h1',
 	          null,
 	          'Droids You Are Looking For'
 	        ),
-	        _react2.default.createElement(_SearchBox2.default, null),
+	        _react2.default.createElement(_SearchBox2.default, { whenUserTypes: this.whenUserTypes.bind(this) }),
 	        this.getSearchDOM(),
-	        '// ',
-	        _react2.default.createElement(ProductResult, { productResult: this.state.searchResult })
+	        _react2.default.createElement(_ProductResult2.default, { displayResults: this.state.searchResult })
 	      );
 	    }
 	  }, {
 	    key: 'getSearchDOM',
 	    value: function getSearchDOM() {
-	      var searchingFor = this.state.searchingFor;
+	      var searchQuery = this.state.searchQuery;
 
-	      if (searchingFor) {
+	      if (searchQuery) {
 	        return _react2.default.createElement(
 	          'div',
 	          null,
@@ -121,15 +125,10 @@
 	  }, {
 	    key: 'whenUserTypes',
 	    value: function whenUserTypes(e) {
-	      var queryText = e.target.value;
-
+	      var query = e.target.value;
 	      var that = this;
-
-	      this.setState({ searchQuery: queryText });
-
-	      console.log(queryText);
-
-	      fetch('https://api.redmart.com/v1.5.6/catalog/search?q=' + queryText + '&pageSize=18&sort=1').then(function (res) {
+	      this.setState({ searchQuery: query });
+	      fetch('https://api.redmart.com/v1.5.6/catalog/search?q=' + query + '&pageSize=18&sort=1').then(function (res) {
 	        return res.json();
 	      }).then(function (data) {
 	        return that.setState({
@@ -19771,10 +19770,12 @@
 	  _createClass(SearchBox, [{
 	    key: 'render',
 	    value: function render() {
+	      var _context;
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'searchbox' },
-	        _react2.default.createElement('input', { onChange: this.props.whenUserTypes, type: 'text',
+	        { className: 'search-box' },
+	        _react2.default.createElement('input', { onChange: (_context = this.props).whenUserTypes.bind(_context), type: 'text',
 	          placeholder: 'Jedi Mind Trick here' })
 	      );
 	    }
@@ -19784,6 +19785,65 @@
 	})(_react2.default.Component);
 
 	exports.default = SearchBox;
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ProductResult = (function (_React$Component) {
+	  _inherits(ProductResult, _React$Component);
+
+	  function ProductResult() {
+	    _classCallCheck(this, ProductResult);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductResult).apply(this, arguments));
+	  }
+
+	  _createClass(ProductResult, [{
+	    key: 'render',
+	    value: function render() {
+	      var displayResults = this.props.displayResults;
+
+	      var productListDOM = displayResults.map(function (product) {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          product.title
+	        );
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'product-result' },
+	        productListDOM
+	      );
+	    }
+	  }]);
+
+	  return ProductResult;
+	})(_react2.default.Component);
+
+	exports.default = ProductResult;
 
 /***/ }
 /******/ ]);
